@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<body>
+
+<div layout:fragment="content" class="flex flex-col items-center justify-center h-screen gap-10">
+
+    <div class="join">
+        <div>
+            <div>
+                <input id="user-search" class="input input-bordered join-item" placeholder="Search"/>
+            </div>
+        </div>
+        <select id="user-select" class="select select-bordered join-item">
+            <option disabled selected>Select existing user</option>
+            <option th:each="user : ${users}" th:value="${user.id}"
+                    th:text="|${user.firstName}  ${user.lastName} (${user.email})|">User
+            </option>
+        </select>
+        <div class="indicator">
+            <button class="btn join-item">Select</button>
+        </div>
+    </div>
+    <a id="create-new-user-button" th:href="@{/users/create}" class="btn btn-outline btn-secondary w-full max-w-md"
+       role="button">Create new user</a>
+</div>
+
+<th:block layout:fragment="script-content">
+    <script th:inline="javascript">
+        const users = [[${users}]];
+    </script>
+
+    <script>
+        document.getElementById('user-search').addEventListener('blur', (event) => {
+            const searchTerm = event.target.value.toLowerCase();
+
+            const userSelect = document.getElementById('user-select');
+            for (let i = 0; i < userSelect.options.length; i++) {
+                const option = userSelect.options[i];
+                const optionText = option.text.toLowerCase();
+
+                option.style.display = optionText.includes(searchTerm) ? '' : 'none';
+            }
+        });
+    </script>
+</th:block>
+</body>
+</html>
