@@ -5,15 +5,9 @@
       layout:decorate="~{layout/main}">
 <body>
 
-
 <div layout:fragment="content">
-<!--    <div th:replace="~{fragments/page-title :: page-title('Contact Nathan')}"></div>-->
-    <div th:replace="~{fragments/usersFragment :: contentFragment}"></div>
+    <div th:replace="~{fragments/usersFragment :: combinedFragment}"></div>
 </div>
-
-<th:block layout:fragment="script-content">
-    <th:block th:replace="~{fragments/usersFragment :: scriptContentFragment}"> </th:block>
-</th:block>
 
 </body>
 </html>

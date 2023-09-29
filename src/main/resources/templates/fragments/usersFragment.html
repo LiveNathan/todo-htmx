@@ -4,31 +4,33 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
 <body>
-<div th:fragment="contentFragment" class="flex flex-col items-center justify-center h-screen gap-10">
+<!-- in usersFragment.html -->
 
-    <div class="join">
-        <div>
+<div th:fragment="combinedFragment">
+    <div class="flex flex-col items-center justify-center h-screen gap-10">
+
+        <div class="join">
             <div>
-                <input id="user-search" class="input input-bordered join-item" placeholder="Search"/>
+                <div>
+                    <input id="user-search" class="input input-bordered join-item" placeholder="Search"/>
+                </div>
+            </div>
+            <select id="user-select" class="select select-bordered join-item">
+                <option disabled selected>Select existing user</option>
+                <option th:each="user : ${users}" th:value="${user.id}"
+                        th:text="|${user.firstName}  ${user.lastName} (${user.email})|">User
+                </option>
+            </select>
+            <div class="indicator">
+                <button class="btn join-item">Select</button>
             </div>
         </div>
-        <select id="user-select" class="select select-bordered join-item">
-            <option disabled selected>Select existing user</option>
-            <option th:each="user : ${users}" th:value="${user.id}"
-                    th:text="|${user.firstName}  ${user.lastName} (${user.email})|">User
-            </option>
-        </select>
-        <div class="indicator">
-            <button class="btn join-item">Select</button>
-        </div>
+        <a id="create-new-user-button" th:href="@{/users/create}" class="btn btn-outline btn-secondary w-full max-w-md"
+           role="button">Create new user</a>
+
     </div>
-    <a id="create-new-user-button" th:href="@{/users/create}" class="btn btn-outline btn-secondary w-full max-w-md"
-       role="button">Create new user</a>
 
-</div>
-
-<th:block th:fragment="scriptContentFragment">
-    <script>
+    <script th:inline="javascript">
         document.getElementById('user-search').addEventListener('blur', (event) => {
             const searchTerm = event.target.value.toLowerCase();
 
@@ -41,7 +43,7 @@
             }
         });
     </script>
-</th:block>
+</div>
 
 </body>
 </html>

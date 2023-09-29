@@ -1,6 +1,7 @@
 package dev.nathanlively.todohtmx;
 
 import dev.nathanlively.todohtmx.users.GetUsersResponse;
+import io.github.wimdeblauwe.hsbt.mvc.HxRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -38,5 +39,23 @@ public class HomeController {
         assert responseBody != null;
         model.addAttribute("users", responseBody.data());
         return "users";
+    }
+
+    @HxRequest
+    @GetMapping("users")
+    public String showAllUsersHtmx(Model model) {
+
+        ResponseEntity<GetUsersResponse> response = restTemplate.exchange(
+                "http://demo.codingnomads.co:8080/tasks_api/users",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+        GetUsersResponse responseBody = response.getBody();
+
+        assert responseBody != null;
+        model.addAttribute("users", responseBody.data());
+        return "fragments/usersFragment :: combinedFragment";
     }
 }
