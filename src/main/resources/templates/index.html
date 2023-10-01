@@ -5,7 +5,7 @@
       layout:decorate="~{layout/main}">
 <body>
 <div layout:fragment="content">
-    <div id="replace-me" hx-get="/users" hx-swap="outerHTML" hx-trigger="load"></div>
+    <div id="replace-me" hx:get="@{/users}" hx-swap="outerHTML" hx-trigger="load"></div>
 </div>
 <th:block layout:fragment="script-content">
     <!-- Add additional scripts there that are only needed for this page (Application wide scripts should be added in layout/main.html) --->

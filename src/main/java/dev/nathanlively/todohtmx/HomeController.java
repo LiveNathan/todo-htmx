@@ -1,6 +1,7 @@
 package dev.nathanlively.todohtmx;
 
 import dev.nathanlively.todohtmx.users.GetUsersResponse;
+import dev.nathanlively.todohtmx.users.UserFormDto;
 import io.github.wimdeblauwe.hsbt.mvc.HxRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
@@ -57,5 +60,19 @@ public class HomeController {
         assert responseBody != null;
         model.addAttribute("users", responseBody.data());
         return "fragments/usersFragment :: combinedFragment";
+    }
+
+    @HxRequest
+    @GetMapping("users/create")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("userFormDto", new UserFormDto());
+        return "fragments/registrationFormFragment :: registrationFormFragment";
+    }
+
+    @HxRequest
+    @PostMapping("users/create")
+    public String submitRegistrationForm(@ModelAttribute UserFormDto userFormDto, Model model) {
+        // Handle creation of new user
+        return "someResponseView";
     }
 }

@@ -6,7 +6,7 @@
 <body>
 <!-- in usersFragment.html -->
 
-<div th:fragment="combinedFragment">
+<div th:fragment="combinedFragment" id="replace-me" hx-swap="outerHTML">
     <div class="flex flex-col items-center justify-center h-screen gap-10">
 
         <div class="join">
@@ -25,7 +25,13 @@
                 <button class="btn join-item">Select</button>
             </div>
         </div>
-        <a id="create-new-user-button" th:href="@{/users/create}" class="btn btn-outline btn-secondary w-full max-w-md"
+
+        <div class="divider">OR</div>
+
+        <a id="create-new-user-button" hx:get="@{/users/create}"
+           hx-swap="outerHTML" hx-trigger="click"
+           hx-target="#replace-me"
+           class="btn btn-outline btn-secondary w-full max-w-md"
            role="button">Create new user</a>
 
     </div>
