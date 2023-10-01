@@ -5,14 +5,14 @@ import dev.nathanlively.todohtmx.users.UserFormDto;
 import io.github.wimdeblauwe.hsbt.mvc.HxRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
@@ -72,7 +72,19 @@ public class HomeController {
     @HxRequest
     @PostMapping("users/create")
     public String submitRegistrationForm(@ModelAttribute UserFormDto userFormDto, Model model) {
-        // Handle creation of new user
-        return "someResponseView";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<UserFormDto> entity = new HttpEntity<>(userFormDto, headers);
+
+        restTemplate.exchange(
+                "http://demo.codingnomads.co:8080/tasks_api/users",
+                HttpMethod.POST,
+                entity,
+                Void.class
+        );
+
+        return "redirect:/users";
     }
 }

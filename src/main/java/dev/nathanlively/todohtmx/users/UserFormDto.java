@@ -9,6 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserFormDto {
     private String email;
-    private String firstName;
-    private String lastName;
+    private String first_name;
+    private String last_name;
 }
