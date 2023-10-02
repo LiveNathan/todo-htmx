@@ -84,7 +84,7 @@ public class HomeController {
 
         assert responseBody != null;
         model.addAttribute("tasks", responseBody.data());
-        return "fragments/usersFragment :: combinedFragment";
+        return "fragments/tasksFragment :: tasksFragment";
     }
 
 }
