@@ -25,6 +25,8 @@
         <button type="submit" class="btn btn-primary w-full max-w-sm">Create a New User</button>
     </form>
 
+    <div class="divider">OR</div>
+
     <a id="select-existing-user-button" hx:get="@{/users}"
        hx-swap="outerHTML" hx-trigger="click"
        hx-target="#replace-me"

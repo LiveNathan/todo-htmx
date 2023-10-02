@@ -9,22 +9,26 @@
 <div th:fragment="combinedFragment" id="replace-me" hx-swap="outerHTML">
     <div class="flex flex-col items-center justify-center h-screen gap-10">
 
-        <div class="join">
-            <div>
+        <form method="get" id="user-select-form" action="#" hx:get="@{/users/tasks}" hx-vals='js:{userId: document.getElementById("user-select").value}' hx-swap="outerHTML">
+            <div class="join">
                 <div>
-                    <input id="user-search" class="input input-bordered join-item" placeholder="Search"/>
+                    <div>
+                        <label class="sr-only" for="user-search">User Search</label>
+                        <input id="user-search" class="input input-bordered join-item" placeholder="Search"/>
+                    </div>
+                </div>
+                <label class="sr-only" for="user-select">User Select</label>
+                <select id="user-select" name="userId" class="select select-bordered join-item">
+                    <option disabled selected>Select existing user</option>
+                    <option th:each="user : ${users}" th:value="${user.id}"
+                            th:text="|${user.firstName}  ${user.lastName} (${user.email})|">User
+                    </option>
+                </select>
+                <div class="indicator">
+                    <button class="btn join-item">Select</button>
                 </div>
             </div>
-            <select id="user-select" class="select select-bordered join-item">
-                <option disabled selected>Select existing user</option>
-                <option th:each="user : ${users}" th:value="${user.id}"
-                        th:text="|${user.firstName}  ${user.lastName} (${user.email})|">User
-                </option>
-            </select>
-            <div class="indicator">
-                <button class="btn join-item">Select</button>
-            </div>
-        </div>
+        </form>
 
         <div class="divider">OR</div>
 

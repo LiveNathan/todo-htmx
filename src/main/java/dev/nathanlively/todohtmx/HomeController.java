@@ -1,5 +1,6 @@
 package dev.nathanlively.todohtmx;
 
+import dev.nathanlively.todohtmx.tasks.GetUserTasksResponse;
 import dev.nathanlively.todohtmx.users.GetUsersResponse;
 import dev.nathanlively.todohtmx.users.UserFormDto;
 import io.github.wimdeblauwe.hsbt.mvc.HxRequest;
@@ -8,10 +9,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,23 +23,6 @@ public class HomeController {
     @GetMapping
     public String index(Model model) {
         return "index";
-    }
-
-    @GetMapping("users")
-    public String showAllUsers(Model model) {
-
-        ResponseEntity<GetUsersResponse> response = restTemplate.exchange(
-                "http://demo.codingnomads.co:8080/tasks_api/users",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {
-                }
-        );
-        GetUsersResponse responseBody = response.getBody();
-
-        assert responseBody != null;
-        model.addAttribute("users", responseBody.data());
-        return "users";
     }
 
     @HxRequest
@@ -87,4 +68,23 @@ public class HomeController {
 
         return "redirect:/users";
     }
+
+    @HxRequest
+    @GetMapping("users/tasks")
+    public String showUsersTaks(Model model, @RequestParam String userId) {
+
+        ResponseEntity<GetUserTasksResponse> response = restTemplate.exchange(
+                "http://demo.codingnomads.co:8080/tasks_api/users/" + userId + "/tasks",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+        GetUserTasksResponse responseBody = response.getBody();
+
+        assert responseBody != null;
+        model.addAttribute("tasks", responseBody.data());
+        return "fragments/usersFragment :: combinedFragment";
+    }
+
 }
