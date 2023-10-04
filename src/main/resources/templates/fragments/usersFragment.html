@@ -10,6 +10,7 @@
     <div class="flex flex-col items-center justify-center h-screen gap-10">
 
         <form method="get" id="user-select-form" action="#" hx:get="@{/users/tasks}" hx-vals='js:{userId: document.getElementById("user-select").value}'
+              hx-push-url="true"
               hx-swap="outerHTML" hx-target="#replace-me">
             <div class="join">
                 <div>

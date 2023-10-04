@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<body>
+
+<div th:fragment="tasksFragment" id="replace-me" hx-swap="outerHTML">
+
+    <form id="new-todo-form" action="#" hx:post="@{/tasks}" method="post" th:object="${task}">
+        <input type="hidden" th:field="*{userId}" />
+        <input type="hidden" th:field="*{description}" />
+        <input type="hidden" th:field="*{completed}" />
+
+        <input id="new-todo-input" type="text"  placeholder="Next task..." autofocus class="input input-bordered w-full max-w-xs" autocomplete="false"
+               name="name"
+               th:field="*{name}"
+               hx-target="#todo-list"
+               hx-swap="beforeend"
+               hx-post="/tasks"
+               hx-trigger="keyup[key=='Enter']"/>
+    </form>
+
+    <div class="">
+        <table class="table table-xs table-pin-rows table-pin-cols">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                </tr>
+            </thead>
+            <tbody id="todo-list">
+                <tr th:insert="~{fragments/taskFragment :: taskFragment(${task})}" th:each="task : ${tasks}">
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script th:inline="javascript">
+
+    </script>
+</div>
+
+</body>
+</html>

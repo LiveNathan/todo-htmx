@@ -1,6 +1,8 @@
 package dev.nathanlively.todohtmx;
 
+import dev.nathanlively.todohtmx.task.PostUserTaskResponse;
 import dev.nathanlively.todohtmx.tasks.GetUserTasksResponse;
+import dev.nathanlively.todohtmx.tasks.TodoItemFormData;
 import dev.nathanlively.todohtmx.users.GetUsersResponse;
 import dev.nathanlively.todohtmx.users.UserFormDto;
 import io.github.wimdeblauwe.hsbt.mvc.HxRequest;
@@ -10,7 +12,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
@@ -84,7 +85,32 @@ public class HomeController {
 
         assert responseBody != null;
         model.addAttribute("tasks", responseBody.data());
+        model.addAttribute("task", new TodoItemFormData(userId, ""));
         return "fragments/tasksFragment :: tasksFragment";
+    }
+
+    @HxRequest
+    @PostMapping("tasks")
+    public String addTodoItem(TodoItemFormData task, Model model) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<TodoItemFormData> entity = new HttpEntity<>(task, headers);
+
+        ResponseEntity<PostUserTaskResponse> taskResponse = restTemplate.exchange(
+                "http://demo.codingnomads.co:8080/tasks_api/tasks",
+                HttpMethod.POST,
+                entity,
+                new ParameterizedTypeReference<>() {}
+        );
+        PostUserTaskResponse responseBody = taskResponse.getBody();
+
+        assert responseBody != null;
+        model.addAttribute("task", responseBody.postTaskRecord());
+
+//        response.setHeader("HX-Trigger", "itemAdded");
+        return "fragments/taskFragment :: taskFragment";
     }
 
 }
