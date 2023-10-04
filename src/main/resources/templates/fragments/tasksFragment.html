@@ -5,38 +5,41 @@
       layout:decorate="~{layout/main}">
 <body>
 
-<div th:fragment="tasksFragment" id="replace-me" hx-swap="outerHTML">
+<div th:fragment="tasksFragment" id="replace-me" hx-swap="outerHTML"
+     class="flex flex-col items-center justify-center h-screen">
 
-    <form id="new-todo-form" action="#" hx:post="@{/tasks}" method="post" th:object="${task}">
-        <input type="hidden" th:field="*{userId}" />
-        <input type="hidden" th:field="*{description}" />
-        <input type="hidden" th:field="*{completed}" />
+    <form id="new-todo-form" th:object="${task}" th:action="@{/tasks}" method="post"
+          hx-target="#todo-list"
+          hx-swap="beforeend"
+          hx:post="@{/tasks}">
+        <input type="hidden" th:field="*{userId}"/>
+        <input type="hidden" th:field="*{description}"/>
+        <input type="hidden" th:field="*{completed}"/>
 
-        <input id="new-todo-input" type="text"  placeholder="Next task..." autofocus class="input input-bordered w-full max-w-xs" autocomplete="false"
+        <input id="new-todo-input" type="text" placeholder="Next task..." autofocus
+               class="input input-bordered w-full max-w-xs" autocomplete="false"
                name="name"
                th:field="*{name}"
-               hx-target="#todo-list"
-               hx-swap="beforeend"
-               hx-post="/tasks"
                hx-trigger="keyup[key=='Enter']"/>
     </form>
 
-    <div class="">
-        <table class="table table-xs table-pin-rows table-pin-cols">
+    <div class="overflow-x-auto max-h-96 overflow-y-auto">
+        <table class="table table-xs">
             <thead>
-                <tr>
-                    <td>Name</td>
-                </tr>
+            <tr>
+                <td>Name</td>
+            </tr>
             </thead>
             <tbody id="todo-list">
-                <tr th:insert="~{fragments/taskFragment :: taskFragment(${task})}" th:each="task : ${tasks}">
-                </tr>
+            <tr th:insert="~{fragments/taskFragment :: taskFragment(${task})}" th:each="task : ${tasks}"></tr>
             </tbody>
         </table>
     </div>
 
     <script th:inline="javascript">
-
+        htmx.on('#new-todo-form', 'htmx:afterRequest', function (event) {
+            document.querySelector('#new-todo-input').value = '';
+        });
     </script>
 </div>
 

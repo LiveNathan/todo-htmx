@@ -91,7 +91,7 @@ public class HomeController {
 
     @HxRequest
     @PostMapping("tasks")
-    public String addTodoItem(TodoItemFormData task, Model model) {
+    public String addUserTask(TodoItemFormData task, Model model) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -109,7 +109,6 @@ public class HomeController {
         assert responseBody != null;
         model.addAttribute("task", responseBody.postTaskRecord());
 
-//        response.setHeader("HX-Trigger", "itemAdded");
         return "fragments/taskFragment :: taskFragment";
     }
 

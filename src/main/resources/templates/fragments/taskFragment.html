@@ -3,6 +3,8 @@
       xmlns:th="http://www.thymeleaf.org"
       lang="en">
 
-    <td th:fragment="taskFragment(task)" th:text="${task.name}">Cy Ganderton</td>
+    <tr th:fragment="taskFragment(task)">
+        <td  th:text="${task.name}">task</td>
+    </tr>
 
 </html>
