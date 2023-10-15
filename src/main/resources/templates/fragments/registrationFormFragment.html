@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<body>
+
+<div th:fragment="registrationFormFragment" id="replace-me" hx-swap="outerHTML"
+     class="flex flex-col gap-y-4 items-center justify-center h-screen">
+
+    <form id="register-user-form" action="#" hx:post="@{/users/create}" hx-swap="outerHTML" th:object="${userFormDto}"
+          method="post" class="contents">
+        <label class="sr-only" for="email">Email</label>
+        <input id="email" type="email" th:field="*{email}" placeholder="Email"
+               class="input input-bordered w-full max-w-sm" autocomplete="false"/>
+
+        <label class="sr-only" for="firstName">First Name</label>
+        <input id="firstName" type="text" th:field="*{first_name}" placeholder="First Name"
+               class="input input-bordered w-full max-w-sm"/>
+
+        <label class="sr-only" for="lastName">Last Name</label>
+        <input id="lastName" type="text" th:field="*{last_name}" placeholder="Last Name"
+               class="input input-bordered w-full max-w-sm"/>
+
+        <button type="submit" class="btn btn-primary w-full max-w-sm">Create a New User</button>
+    </form>
+
+    <a id="select-existing-user-button" hx:get="@{/users}"
+       hx-swap="outerHTML" hx-trigger="click"
+       hx-target="#replace-me"
+       class="btn btn-outline btn-secondary w-full max-w-sm"
+       role="button">Select existing user</a>
+
+</div>
+
+</body>
+</html>
