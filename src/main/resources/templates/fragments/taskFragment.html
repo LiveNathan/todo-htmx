@@ -5,6 +5,8 @@
 
     <tr th:fragment="taskFragment(task)">
         <td  th:text="${task.name}">task</td>
+        <td  th:text="${task.getCreatedAtAsDateTime}">task</td>
+        <td  th:text="${task.getUpdatedAtAsDateTime}">task</td>
     </tr>
 
 </html>
